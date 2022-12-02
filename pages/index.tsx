@@ -1,88 +1,90 @@
 import { getLayout } from "./components/layout";
 import { NextPageWithLayout } from "./_app";
 import CarouselImg from "./components/carousel-img";
+import { GoogleSpreadsheet } from "google-spreadsheet";
+import { useEffect, useState } from "react";
+import SpinnerCommon from "./components/spinner";
+
+interface dataInfo {
+  title: string;
+  desc: string;
+  imgs: string[];
+  amount: number;
+  counts: number;
+}
 
 const Home: NextPageWithLayout = () => {
+  const [isLoad, setIsLoad] = useState(false);
+  const [data, setData] = useState<dataInfo[]>();
+  const SPREADSHEET_ID = process.env.NEXT_PUBLIC_SPREADSHEET_ID;
+  const SHEET_ID = parseInt(process.env.NEXT_PUBLIC_SHEET_ID as string);
+  const CLIENT_EMAIL = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_EMAIL;
+  const PRIVATE_KEY = process.env.NEXT_PUBLIC_GOOGLE_SERVICE_PRIVATE_KEY;
+  const doc = new GoogleSpreadsheet(SPREADSHEET_ID);
+
+  useEffect(() => {
+    appendSpreadsheet();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const appendSpreadsheet = async () => {
+    setIsLoad(true);
+    try {
+      await doc.useServiceAccountAuth({
+        client_email: CLIENT_EMAIL as any,
+        private_key: (PRIVATE_KEY as any).replace(/\\n/g, "\n"),
+      });
+      // loads document properties and worksheets
+      await doc.loadInfo();
+
+      const sheet = doc.sheetsById[SHEET_ID];
+      const rows = await sheet.getRows();
+      const fotmatterData = rows.map((item) => ({
+        title: item.Title,
+        desc: item.Describe,
+        imgs: item.Images.split(","),
+        amount: item.Amount,
+        counts: item.Counts,
+      }));
+      setData(fotmatterData);
+      setIsLoad(false);
+    } catch (e) {
+      setIsLoad(false);
+      console.error("Error: ", e);
+    }
+  };
+
   return (
     <div className="row">
-      <div className="col-lg-4 col-md-6 col-12">
-        <div className="card">
-          <div className="image">
-            <CarouselImg
-              imgList={[
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmMEmG1qClzsjzDJznbtF9y0W6Y1G6XgBzSw&usqp=CAU",
-                "https://www.thespruce.com/thmb/X_O6fPKasSFHP9z_Szg4ebapeaQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/porcelain-tile-vs-ceramic-tile-1822583_hero-83338b9dbf96484fbf81538ea0bbe2df.jpg",
-              ]}
-            />
-          </div>
-          <div className="content">
-            <h3 className="title">Apple Iphone X</h3>
-            <div className="describe mb-2">介紹介紹介紹</div>
-          </div>
-          <div className="buttom-content">
-            <p className="price">
-              金額:
-              <span>$2000</span>
-            </p>
-            <p className="counts">
-              數量
-              <span>(30)</span>
-            </p>
-          </div>
-        </div>
-      </div>{" "}
-      <div className="col-lg-4 col-md-6 col-12">
-        <div className="card">
-          <div className="image">
-            <CarouselImg
-              imgList={[
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmMEmG1qClzsjzDJznbtF9y0W6Y1G6XgBzSw&usqp=CAU",
-                "https://www.thespruce.com/thmb/X_O6fPKasSFHP9z_Szg4ebapeaQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/porcelain-tile-vs-ceramic-tile-1822583_hero-83338b9dbf96484fbf81538ea0bbe2df.jpg",
-              ]}
-            />
-          </div>
-          <div className="content">
-            <h3 className="title">Apple Iphone X</h3>
-            <div className="describe mb-2">介紹介紹介紹</div>
-          </div>
-          <div className="buttom-content">
-            <p className="price">
-              金額:
-              <span>$2000</span>
-            </p>
-            <p className="counts">
-              數量
-              <span>(30)</span>
-            </p>
-          </div>
-        </div>
-      </div>
-      <div className="col-lg-4 col-md-6 col-12">
-        <div className="card">
-          <div className="image">
-            <CarouselImg
-              imgList={[
-                "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSmMEmG1qClzsjzDJznbtF9y0W6Y1G6XgBzSw&usqp=CAU",
-                "https://www.thespruce.com/thmb/X_O6fPKasSFHP9z_Szg4ebapeaQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/porcelain-tile-vs-ceramic-tile-1822583_hero-83338b9dbf96484fbf81538ea0bbe2df.jpg",
-              ]}
-            />
-          </div>
-          <div className="content">
-            <h3 className="title">Apple Iphone X</h3>
-            <div className="describe mb-2">介紹介紹介紹</div>
-          </div>
-          <div className="buttom-content">
-            <p className="price">
-              金額:
-              <span>$2000</span>
-            </p>
-            <p className="counts">
-              數量
-              <span>(30)</span>
-            </p>
-          </div>
-        </div>
-      </div>
+      <>
+        {isLoad && <SpinnerCommon />}
+        {data &&
+          data.map((item, index) => {
+            return (
+              <div className="col-lg-4 col-md-6 col-12" key={index}>
+                <div className="card">
+                  <div className="image">
+                    <CarouselImg imgList={item.imgs} />
+                  </div>
+                  <div className="content">
+                    <h3 className="title">{item.title}</h3>
+                    <div className="describe mb-2">{item.desc}</div>
+                  </div>
+                  <div className="buttom-content">
+                    <p className="price">
+                      金額:
+                      <span>${item.amount}</span>
+                    </p>
+                    <p className="counts">
+                      數量
+                      <span>({item.counts})</span>
+                    </p>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+      </>
     </div>
   );
 };

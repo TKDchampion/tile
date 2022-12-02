@@ -29,13 +29,10 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return getLayout(
     <SSRProvider>
       <Head>
-        <title>HouseTalker</title>
-        <meta name="application-name" content="HouseTalker" />
-        <meta
-          name="keywords"
-          content="house,HouseTalker,rent,租屋,惡房東,房東"
-        />
-        <meta property="og:site_name" content="HouseTalker" />
+        <title>各種磁磚</title>
+        <meta name="application-name" content="各種磁磚" />
+        <meta name="keywords" content="各種磁磚,磁磚,磁磚集合" />
+        <meta property="og:site_name" content="各種磁磚" />
         <meta
           property="og:image"
           content="https://www.maxpixel.net/static/photo/1x/House-Illustration-Exterior-Two-Floors-House-House-4921836.jpg"

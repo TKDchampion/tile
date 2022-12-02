@@ -19,6 +19,8 @@ const CarouselImg: FC<Props> = ({ imgList }) => {
                 width={100}
                 height={80}
                 src={item}
+                loading="eager"
+                priority={true}
               ></Image>
               {/* <Carousel.Caption>
             <h3>First slide label</h3>
