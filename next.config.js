@@ -13,6 +13,9 @@ const nextConfig = {
     );
     return config;
   },
+  images: {
+    domains: ["www.thespruce.com", "encrypted-tbn0.gstatic.com"],
+  },
 };
 
 module.exports = nextConfig;

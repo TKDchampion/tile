@@ -8,7 +8,9 @@ const Layout: FC<Props> = ({ children }) => {
   return (
     <div>
       {/* Navbar Start */}
-      <div className="bar"></div>
+      <div className="bar">
+        <h1>磁磚平台</h1>
+      </div>
       {/* Navbar End */}
 
       <div className="contain">
