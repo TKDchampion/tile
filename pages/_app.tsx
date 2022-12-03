@@ -29,9 +29,9 @@ function MyApp({ Component, pageProps }: AppPropsWithLayout) {
   return getLayout(
     <SSRProvider>
       <Head>
-        <title>各種磁磚</title>
-        <meta name="application-name" content="各種磁磚" />
-        <meta name="keywords" content="各種磁磚,磁磚,磁磚集合" />
+        <title>NG磁磚</title>
+        <meta name="application-name" content="NG磁磚" />
+        <meta name="keywords" content="各種磁磚,磁磚,磁磚集合,NG磁磚,NG" />
         <meta property="og:site_name" content="各種磁磚" />
         <meta
           property="og:image"

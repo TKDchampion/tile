@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { FC } from "react";
 import Carousel from "react-bootstrap/Carousel";
-import Image from "next/image";
+// import Image from "next/image";
 
 interface Props {
   imgList?: string[];
@@ -13,7 +14,10 @@ const CarouselImg: FC<Props> = ({ imgList }) => {
         imgList.map((item, index) => {
           return (
             <Carousel.Item key={index}>
-              <Image
+              <div className="carousel-img">
+                <img src={item} alt="" width="400" height="320" />
+              </div>
+              {/* <Image
                 layout="responsive"
                 alt=""
                 width={100}
@@ -21,7 +25,7 @@ const CarouselImg: FC<Props> = ({ imgList }) => {
                 src={item}
                 loading="eager"
                 priority={true}
-              ></Image>
+              ></Image> */}
               {/* <Carousel.Caption>
             <h3>First slide label</h3>
             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>

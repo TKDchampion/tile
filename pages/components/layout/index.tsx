@@ -1,4 +1,6 @@
 import { FC } from "react";
+import Image from "next/image";
+import logo from "../../asset/img/logo.png";
 
 interface Props {
   children?: React.ReactNode;
@@ -9,7 +11,17 @@ const Layout: FC<Props> = ({ children }) => {
     <div>
       {/* Navbar Start */}
       <div className="bar">
-        <h1>磁磚平台</h1>
+        <div className="container-lg d-flex">
+          <div className="img me-2">
+            <Image
+              layout="responsive"
+              className="w-100"
+              src={logo}
+              alt="Image"
+            />
+          </div>
+          <h1>NG磁磚平台</h1>
+        </div>
       </div>
       {/* Navbar End */}
 
@@ -18,7 +30,15 @@ const Layout: FC<Props> = ({ children }) => {
       </div>
 
       {/* Footer Start */}
-      {/* <div>FOOTER</div> */}
+      <div className="footer">
+        <div className="container-lg d-flex align-items-center">
+          <a href="https://www.facebook.com/yaziprinting/">
+            訂購請點此連結私訊YAZI粉專
+          </a>
+          &nbsp; / &nbsp;
+          <a href="https://www.yazicolor.com/">YAZI官方網站</a>
+        </div>
+      </div>
       {/* Footer End */}
     </div>
   );
